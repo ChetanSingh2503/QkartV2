@@ -3,10 +3,11 @@ package QKART_SANITY_LOGIN.Module1;
 import java.sql.Timestamp;
 
 import org.openqa.selenium.By;
-
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
-
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class Register {
     RemoteWebDriver driver;
@@ -26,26 +27,23 @@ public class Register {
     public Boolean registerUser(String Username, String Password, Boolean makeUsernameDynamic)
             throws InterruptedException {
         // Find the Username Text Box
-        WebElement username_txt_box = this.driver.findElement(By.xpath("//input[@name='username']"));
+        WebElement username_txt_box = this.driver.findElement(By.id("username"));
 
         // Get time stamp for generating a unique username
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
         String test_data_username;
-        if (!Username.contains("_")){
+        if (makeUsernameDynamic)
             // Concatenate the timestamp to string to form unique timestamp
             test_data_username = Username + "_" + String.valueOf(timestamp.getTime());
-        }else{
-            test_data_username = Username;
-
-        }
-            
+        else
+        test_data_username = Username;
 
         // Type the generated username in the username field
         username_txt_box.sendKeys(test_data_username);
 
         // Find the password Text Box
-        WebElement password_txt_box = this.driver.findElement(By.xpath("//input[@name='password']"));
+        WebElement password_txt_box = this.driver.findElement(By.id("password"));
         String test_data_password = Password;
 
         // Enter the Password value
@@ -53,13 +51,13 @@ public class Register {
 
         // Find the Confirm password text box
         WebElement confirm_password_txt_box;
-        confirm_password_txt_box = this.driver.findElement(By.xpath("//input[@name='confirmPassword']"));
+        confirm_password_txt_box = this.driver.findElement(By.id("confirmPassword"));
 
         // Enter the Confirm Password Value
         confirm_password_txt_box.sendKeys(test_data_password);
 
         // Find the register now button
-        WebElement register_now_button = this.driver.findElement(By.xpath("//button[text()='Register Now']"));
+        WebElement register_now_button = this.driver.findElement(By.className("button"));
 
         // Click the register now button
         register_now_button.click();
@@ -68,8 +66,6 @@ public class Register {
 
 
         this.lastGeneratedUsername = test_data_username;
-
-
 
         return this.driver.getCurrentUrl().endsWith("/login");
     }
