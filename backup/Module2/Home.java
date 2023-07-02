@@ -29,7 +29,6 @@ public class Home {
             WebElement logout_button = driver.findElement(By.className("MuiButton-text"));
             logout_button.click();
 
-            // SLEEP_STMT_10: Wait for Logout to complete
             // Wait for Logout to Complete
             Thread.sleep(3000);
 
@@ -209,6 +208,7 @@ public class Home {
     public Boolean verifyCartContents(List<String> expectedCartContents) {
         try {
             WebElement cartParent = driver.findElement(By.className("cart"));
+            
             List<WebElement> cartContents = cartParent.findElements(By.className("css-zgtx0t"));
 
             ArrayList<String> actualCartContents = new ArrayList<String>() {
@@ -230,59 +230,6 @@ public class Home {
             return false;
         }
     }
-
-    public Boolean clickPrivacyPolicy() {
-        Boolean status = false;
-        try {
-            // TODO: CRIO_TASK_MODULE_TEST_AUTOMATION - TEST CASE 05: MILESTONE 4
-            // Find and click on the the Checkout button
-            driver.findElement(By.xpath("//*[@id='root']/div/div/div[5]/div[2]/p[1]/a")).click();
-            status = true;
-            return status;
-        } catch (Exception e) {
-            System.out.println("Exception while clicking on clickPrivacyPolicy: " + e.getMessage());
-            return status;
-        }
-    }
-
-    public Boolean verifyUrl() {
-        Boolean status = false;
-        try {
-            String homepageUrl = driver.getCurrentUrl();
-            Thread.sleep(3000);
-            if(homepageUrl.equalsIgnoreCase("https://crio-qkart-frontend-qa.vercel.app/")) {
-            status = true;
-            
-                
-            }
-            return status;
-            
-           
-        } catch (Exception e) {
-            System.out.println("Exception while verifying Url: " + e.getMessage());
-            return status;
-        }
-    }
-
-    //public boolean verifyPrivacyPolicyContent(){
-        ///Boolean status = false;
-
-        //try{
-
-         //   WebElement privacyPolicyContent = driver.findElement(By.tagName("h2"));
-        //    String privacyPolicyText = privacyPolicyContent.getText();
-        //    if(privacyPolicyText.equalsIgnoreCase("Privacy Policy")){
-         //       status = true;
-        //    }
-        //    return status;
-
-        //}catch(Exception e){
-        //    System.out.println("Exception while verifying Privacy Policy content");
-        //    return status;
-
-        //}
-        
-    //}
 }
 
 

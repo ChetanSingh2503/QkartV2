@@ -9,7 +9,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class Login {
     RemoteWebDriver driver;
@@ -26,8 +25,6 @@ public class Login {
     }
 
     public Boolean PerformLogin(String Username, String Password) throws InterruptedException {
-
-        //WebDriverWait wait = new WebDriverWait(driver,30);
         // Find the Username Text Box
         WebElement username_txt_box = this.driver.findElement(By.id("username"));
 
@@ -50,8 +47,8 @@ public class Login {
         login_button.click();
 
         // Wait for Login action to complete
-        //wait.until(ExpectedConditions.urlToBe("https://crio-qkart-frontend-qa.vercel.app/"));
         Thread.sleep(5000);
+
         return this.VerifyUserLoggedIn(Username);
     }
 

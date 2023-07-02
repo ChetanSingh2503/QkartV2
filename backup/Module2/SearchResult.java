@@ -1,7 +1,8 @@
 package QKART_SANITY_LOGIN.Module1;
 
+import java.sql.Driver;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -97,51 +98,25 @@ public class SearchResult {
      */
     public Boolean validateSizeChartContents(List<String> expectedTableHeaders, List<List<String>> expectedTableBody,
             WebDriver driver) {
-                Boolean status = true;
-                try {
-                    // TODO: CRIO_TASK_MODULE_TEST_AUTOMATION - TEST CASE 04: MILESTONE 2
-                    /*
-                     * Locate the table element when the size chart modal is open
-                     * 
-                     * Validate that the contents of expectedTableHeaders is present as the table
-                     * header in the same order
-                     * 
-                     * Validate that the contents of expectedTableBody are present in the table body
-                     * in the same order
-                     */
-                    WebElement sizeChartParent = driver.findElement(By.className("css-uhb5lp"));
-                    WebElement tableElement = sizeChartParent.findElement(By.tagName("table")); 
-                    List<WebElement> tableHeader = tableElement.findElement(By.tagName("thead")).findElements(By.tagName("th"));
-                    driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-                   // WebElement sizeChartParent = driver.findElement(By.xpath("/html/body/div[2]/div[3]/div/div/table/thead/tr"));
-                   String tempHeaderValue;
-                   for(int i=0; i<expectedTableHeaders.size();i++){
-                    tempHeaderValue = tableHeader.get(i).getText();
-                    if(!expectedTableHeaders.get(i).equals(tempHeaderValue)){
-                    System.out.println("Failure in Header Comparision: Expected : " + expectedTableHeaders.get(i) + "Actual :" + tempHeaderValue);
-                    status = false;
-                    }
-                }
-                List<WebElement> tableBodyRows = tableElement.findElement(By.tagName("tbody")).findElements(By.tagName("tr"));
-                List<WebElement> tempBodyRow;
-                for(int i=0; i<expectedTableBody.size(); i++){
-                    tempBodyRow = tableBodyRows.get(i).findElements(By.tagName("td"));
-                    for(int j=0; j<expectedTableBody.get(i).size(); j++){
-                        tempHeaderValue = tempBodyRow.get(j).getText();
-                        if(!expectedTableBody.get(i).get(j).equals(tempHeaderValue)){
-                            System.out.println("Failure in Body Comparision: Expected : " + expectedTableBody.get(i).get(j) + "Actual :" + tempHeaderValue);
-                            status = false;
-                        }
-                    }   
-                }
-                    return status;
-        
-                } catch (Exception e) {
-                    System.out.println("Error while validating chart contents");
-                    return false;
+        Boolean status = true;
+        try {
+            // TODO: CRIO_TASK_MODULE_TEST_AUTOMATION - TEST CASE 04: MILESTONE 2
+            /*
+             * Locate the table element when the size chart modal is open
+             * 
+             * Validate that the contents of expectedTableHeaders is present as the table
+             * header in the same order
+             * 
+             * Validate that the contents of expectedTableBody are present in the table body
+             * in the same order
+             */
+            return status;
+
+        } catch (Exception e) {
+            System.out.println("Error while validating chart contents");
+            return false;
         }
-            
-  }
+    }
 
     /*
      * Return Boolean based on if the Size drop down exists

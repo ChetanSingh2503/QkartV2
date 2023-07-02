@@ -34,10 +34,8 @@ public class Checkout {
              */
             WebElement addressButton =driver.findElement(By.xpath("/html/body/div/div/div[2]/div[1]/div/button[1]"));
             addressButton.click();
-            Thread.sleep(3000);
             WebElement addressBox = driver.findElement(By.xpath("/html/body/div/div/div[2]/div[1]/div/div[2]/div[1]/div/textarea[1]"));
             addressBox.sendKeys(addresString);
-            Thread.sleep(3000);
             driver.findElement(By.xpath("/html/body/div/div/div[2]/div[1]/div/div[2]/div[2]/button[1]")).click();
 
             return true;
@@ -63,7 +61,6 @@ public class Checkout {
                 String addressInitial = driver.findElement(By.xpath("/html/body/div/div/div[2]/div[1]/div/div[1]/div[" + i + "]/div[1]/p")).getText();
                 if(addressInitial.equalsIgnoreCase(addressToSelect)){
                     driver.findElement(By.xpath("/html/body/div/div/div[2]/div[1]/div/div[1]/div[" + i + "]/div[1]/span ")).click();
-                    Thread.sleep(3000);
                     return true;
                 }
             }

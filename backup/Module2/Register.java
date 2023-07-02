@@ -26,8 +26,6 @@ public class Register {
 
     public Boolean registerUser(String Username, String Password, Boolean makeUsernameDynamic)
             throws InterruptedException {
-
-               // WebDriverWait wait = new WebDriverWait(driver, 30);
         // Find the Username Text Box
         WebElement username_txt_box = this.driver.findElement(By.id("username"));
 
@@ -64,8 +62,8 @@ public class Register {
         // Click the register now button
         register_now_button.click();
         // Wait for registration to complete
-        //wait.until(ExpectedConditions.urlToBe("https://crio-qkart-frontend-qa.vercel.app/login"));
-        Thread.sleep(5000);
+        Thread.sleep(3000);
+
 
         this.lastGeneratedUsername = test_data_username;
 
