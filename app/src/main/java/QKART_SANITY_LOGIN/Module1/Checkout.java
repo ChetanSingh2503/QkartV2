@@ -98,8 +98,13 @@ public class Checkout {
     public Boolean verifyInsufficientBalanceMessage() {
         try {
             // TODO: CRIO_TASK_MODULE_TEST_AUTOMATION - TEST CASE 07: MILESTONE 6
-            driver.findElement(By.xpath("//*[@id='notistack-snackbar']")).isDisplayed();
-            return true;
+            WebElement alertmsg = driver.findElement(By.xpath("//*[@id='notistack-snackbar']"));
+            if(alertmsg.isDisplayed()){
+                if(alertmsg.getText().equalsIgnoreCase("You do not have enough balance in your wallet for this purchase")){
+                    return true;
+                }
+            }
+            return false;
         } catch (Exception e) {
             System.out.println("Exception while verifying insufficient balance message: " + e.getMessage());
             return false;

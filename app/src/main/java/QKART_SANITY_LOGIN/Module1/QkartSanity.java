@@ -498,6 +498,8 @@ public class QkartSanity {
         Thread.sleep(3000);
 
         homePage.changeProductQuantityinCart("Stylecon 9 Seater RHS Sofa Set", 10);
+        Thread.sleep(5000);
+       
 
         homePage.clickCheckout();
 
@@ -811,51 +813,25 @@ public class QkartSanity {
 
         checkoutPage.placeOrder();
 
-        String parent = driver.getWindowHandle();
-
-        Set<String> allWindows = driver.getWindowHandles();
-        for (String window : allWindows) {
-            if(!window.equalsIgnoreCase(parent)){
-                driver.switchTo().window(window);
-                Thread.sleep(5000);
-                if(driver.findElement(By.tagName("iframe")).getSize().equals(3)){
-                    status = true;
-                }
-                else{
-                    status = false;
-                }
-                
-            }
-        }
-
-        logStatus("End TestCase", "Test Case 12: verify if ads are displayed on the final page ", status ? "PASS" : "FAIL");
-        logStatus("Start TestCase", "Test Case 12: verify if ads button are enabled on the final page ", status ? "PASS" : "FAIL");
-        try{
-            for(int i = 1; i < 3; i++){
-                //driver.switchTo().frame(i);
-                driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div/iframe[" + i + "]"));
-                //for(int j = 1; j < 3; j++){
-                    //if(driver.findElement(By.xpath("/html/body/div/div/div/div/div/div/button[1]")).isEnabled() && driver.findElement(By.xpath("/html/body/div/div/div/div/div/div/button[2]")).isEnabled()){
-                    if(driver.findElement(By.tagName("button")).isEnabled()){    
-                    status = true;
-                    }else{
-                        status = false;
-                    }
-                
-            }
-        }catch(Exception e){
-            System.out.println(e);
-            return status;
-        }
-        logStatus("End TestCase", "Test Case 12: verify if ads button are enabled on the final page ", status ? "PASS" : "FAIL");
-
-        
-        
-
-
-        
-
-        return status;
+        WebDriverWait wait = new WebDriverWait(driver, 30, 5000);
+        wait.until(ExpectedConditions.urlContains("/thanks"));
+        // driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        // Check if placing order redirected to the Thansk page
+        status = driver.getCurrentUrl().endsWith("/thanks");        
+        // TODO: Verify the iframes are present for the advertisements
+        Thanks thanksPage = new Thanks(driver);
+        String[] adNames = {"Ipad Mini 64GB","Galaxy A21","COVID-19"};
+        status = thanksPage.verifyAdvertisementsPresent(driver, adNames);
+        logStatus("Step Status","Verify 3 advertisements frames are present ",status? "PASS" : "FAIL");
+        //Verify the buttons are clickable in QKart product ad for Ipad Mini 64GB
+        status = thanksPage.verifyButtonsInQkartAd(driver, "Ipad Mini 64GB");
+        logStatus("Step Status", "Verify buttons in the ad for Ipad Mini 64GB ", status? "PASS": "FAIL");
+        //Verify the buttons are clickable in QKart product ad for Galaxy A21
+        status = thanksPage.verifyButtonsInQkartAd(driver, "Galaxy A21");
+        logStatus("Step Status", "Verify buttons in the ad for Galaxy A21 ", status? "PASS": "FAIL");
+        takeScreenshot(driver, "PNG", "EndTestCase12");
+        logStatus("End TestCase", "Test Case 12: Check for advertisements completed : ", status ? "PASS" : "FAIL");
+        return status; 
     }
 
     public static void main(String[] args) throws InterruptedException, MalformedURLException {

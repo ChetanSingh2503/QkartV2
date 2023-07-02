@@ -161,6 +161,7 @@ public class Home {
      * operation
      */
     public Boolean changeProductQuantityinCart(String productName, int quantity) {
+        // 
         try {
             // TODO: CRIO_TASK_MODULE_TEST_AUTOMATION - TEST CASE 06: MILESTONE 5
 
@@ -169,30 +170,27 @@ public class Home {
             // Increment or decrement the quantity of the matching product until the current
             // quantity is reached (Note: Keep a look out when then input quantity is 0,
             // here we need to remove the item completely from the cart)
-            List<WebElement> cartItem = driver.findElements(By.xpath("/html/body/div/div/div/div[3]/div[2]/div"));
-            for(int i = 1; i <= cartItem.size(); i++){
-                String itemName = driver.findElement(By.xpath("/html/body/div/div/div/div[3]/div[2]/div/div[" + i + "]/div/div/div")).getText();
-                if(itemName.equalsIgnoreCase(productName)){
-                    //int cartQuantity =  Integer.valueOf(cartItem.get(i - 1).findElement(By.className("css-olyig7")).getText());
-                    String Quantity  = driver .findElement(By.xpath("/html/body/div/div/div/div[3]/div[2]/div/div[" + i + "]/div/div/div/div/div")).getText();
-                    int cartQuantity = Integer.parseInt(Quantity);
-                    while(cartQuantity != quantity){
-                        if(cartQuantity < quantity){
-                            driver.findElement(By.xpath("/html/body/div/div/div/div[3]/div[2]/div/div[" + i + "]/div/div/div/div/button[2]")).click();
-                            Thread.sleep(3000);
-                            break;
-                        }else if(cartQuantity > quantity){
-                            driver.findElement(By.xpath("/html/body/div/div/div/div[3]/div[2]/div/div[" + i + "]/div/div/div/div/button[1]")).click();
-                            Thread.sleep(3000);
-                            break;
-                        }
-                    }return true;
-
-
-
+            List<WebElement> cartContents = driver.findElements(By.xpath("//*[@class='MuiBox-root css-zgtx0t']"));
+            WebDriverWait wait = new WebDriverWait(driver,10);
+            int currentQty;
+            for(int i=1; i<=cartContents.size(); i++){
+                if(productName.contains(driver.findElement(By.xpath("//*[@class='MuiBox-root css-zgtx0t']["+ i +"]//*[@class='MuiBox-root css-1gjj37g']/div[1]")).getText())){
+                    currentQty = Integer.valueOf(cartContents.get(i-1).findElement(By.className("css-olyig7")).getText());
+                while(currentQty!=quantity){
+                    if(currentQty<quantity){
+                        cartContents.get(i-1).findElements(By.tagName("button")).get(1).click();
+                        //Thread.sleep(2000);
+                        wait.until(ExpectedConditions.textToBePresentInElement(cartContents.get(i-1).findElement(By.className("css-olyig7")), String.valueOf(currentQty+1)));
+                    }
+                    else{
+                        cartContents.get(i-1).findElements(By.tagName("button")).get(0).click();
+                        Thread.sleep(2000);
+                    }
+                    currentQty = Integer.valueOf(cartContents.get(i-1).findElement(By.xpath("(//div[@data-testid='item-qty'])")).getText());
+                }            
+                return true;
                 }
             }
-
 
             return false;
         } catch (Exception e) {
@@ -201,6 +199,22 @@ public class Home {
             System.out.println("exception occurred when updating cart: " + e.getMessage());
             return false;
         }
+    }
+
+    public List<String> getCartContents() {
+        List<String> cartContents = new ArrayList<>();
+        try{
+            WebElement cartParent = driver.findElement(By.className("cart"));
+            List<WebElement> cartItems = cartParent.findElements(By.className("css-zgtx0t"));
+            for (WebElement cartItem : cartItems) {
+                cartContents.add(cartItem.findElement(By.className("css-1gjj37g")).getText().split("\n")[0]);
+                return cartContents;
+            }
+
+        } catch (Exception e){
+            System.out.println("Exception while verifying Cart Contents :" +e.getMessage());
+        }
+        return cartContents;
     }
 
     /*
